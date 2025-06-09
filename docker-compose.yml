@@ -1,0 +1,11 @@
+
+services:
+  servicios-plantillas-tabasco-v1:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: servicios-plantillas-tabasco:v1.0
+    environment:
+      TZ: "America/Mexico_City"
+    restart: always
+    network_mode: host
