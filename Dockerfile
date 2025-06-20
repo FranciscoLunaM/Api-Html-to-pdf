@@ -20,6 +20,7 @@ RUN pip install py-consul
 RUN pip install weasyprint
 RUN pip install qrcode
 RUN pip install fastapi[standard]
+RUN pip install python-dotenv
 CMD ["fastapi", "run", "app/main.py", "--port", "9012"]
 
 
