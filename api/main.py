@@ -25,7 +25,6 @@ port=s.getsockname()[1]
 s.close()
 
 
-
 #consul
 """c = consul.Consul(host=consul_host, port=consul_port)
 
