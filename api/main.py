@@ -4,12 +4,17 @@ from fastapi.middleware.cors import CORSMiddleware
 import consul
 from fastapi import FastAPI
 from routes.pdf.pdf_router import pdf_router
+from dotenv import load_dotenv
+import os
 
 #log errores
 import logging
 logger = logging.getLogger('weasyprint')
 logger.addHandler(logging.StreamHandler())
 
+load_dotenv()
+consul_host = os.getenv("CONSUL_HOST")
+consul_port = os.getenv("CONSUL_PORT")
 
 
 
@@ -22,7 +27,7 @@ s.close()
 
 
 #consul
-"""c = consul.Consul(host='10.2.6.27', port='8500')
+"""c = consul.Consul(host=consul_host, port=consul_port)
 
 c.agent.service.register('servicios-plantillas-tabasco',
                         service_id='servicios-plantillas-tabasco',
