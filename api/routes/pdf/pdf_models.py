@@ -13,6 +13,7 @@ class HtmlContent(BaseModel):
 class Ciudadano(BaseModel):
     nombre: str
     curp: str
+    foto: str
 
 class Titular(BaseModel):
     nombre:str

@@ -1,4 +1,4 @@
-FROM 3.13.3-slim-bullseye
+FROM python:3.13.3-slim-bullseye
 WORKDIR /api
 COPY ./api ./api
 RUN apt-get update && apt-get install -y \
@@ -14,6 +14,7 @@ RUN apt-get update && \
     
 RUN apt-get update && apt-get install -y locales-all
 
+COPY fonts/* /api/fuentes_tipograficas/
 
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONIOENCODING=utf-8
 RUN pip install py-consul
@@ -21,7 +22,4 @@ RUN pip install weasyprint
 RUN pip install qrcode
 RUN pip install fastapi[standard]
 RUN pip install python-dotenv
-CMD ["fastapi", "run", "app/main.py", "--port", "9012"]
-
-
-
+CMD ["fastapi", "run", "api/main.py", "--port", "2021"]
