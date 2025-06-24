@@ -15,7 +15,9 @@ RUN apt-get update && \
 RUN apt-get update && apt-get install -y locales-all
 
 COPY fonts/* /api/fuentes_tipograficas/
+RUN fc-cache -f -v
 
+EXPOSE 2021
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONIOENCODING=utf-8
 RUN pip install py-consul
 RUN pip install weasyprint

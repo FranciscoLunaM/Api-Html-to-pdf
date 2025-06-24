@@ -8,4 +8,6 @@ services:
     environment:
       TZ: "America/Mexico_City"
     restart: always
-    network_mode: host
+    network_mode: host # this is for prod
+    #ports: #only for local development
+      #- "2021:2021"

@@ -4,13 +4,15 @@ import hashlib
 from datetime import datetime
 from fastapi.exceptions import RequestValidationError
 import os
-from weasyprint import HTML as WeasyHTML, CSS
 from fastapi.responses import StreamingResponse
 import base64
 import locale
 from fastapi import APIRouter, HTTPException
 from routes.pdf.pdf_models import *
+from weasyprint.text.fonts import FontConfiguration
+from weasyprint import HTML, CSS
 
+font_config = FontConfiguration()
 
 pdf_router= APIRouter()
 
@@ -24,6 +26,7 @@ async def root():
 @pdf_router.post("/base64")
 async def version2(body: BodyForHtmlToPdf2)->Response: 
         try:
+            
             img = qrcode.make(body.qr)
             image = BytesIO()
             img.save(image, format='PNG')
@@ -61,15 +64,16 @@ async def version2(body: BodyForHtmlToPdf2)->Response:
             if body.sello=="":
                 body.html.body = body.html.body.replace("Firma:", "")
 
-            base_url = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-            
+             
             html_content = f'<!DOCTYPE html><html lang="es"><header>{body.html.header}</header><body> <footer>{body.html.footer}</footer> {body.html.body}</body></html>'
             htmlFormatted = html_content.format(**data)
             pdf_io = BytesIO()
-            WeasyHTML(string=htmlFormatted, base_url=base_url).write_pdf(
-                pdf_io,
-                stylesheets=[CSS(string=body.html.css)] if body.html.css else None
-            )
+            
+            html=HTML(string=htmlFormatted, base_url='api')
+            css = CSS(string=body.html.css,font_config=font_config)
+            html.write_pdf(
+            pdf_io, stylesheets=[css],
+            font_config=font_config)
             pdf_io.seek(0)
             
             pdf_bytes = pdf_io.read()
@@ -128,15 +132,16 @@ async def version2_1(body: BodyForHtmlToPdf2) -> Response :
             if body.sello=="":
                 body.html.body = body.html.body.replace("Firma:", "")
 
-            base_url = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))  
+            
 
             html_content = f'<!DOCTYPE html><html lang="es"><header>{body.html.header}</header><body> <footer>{body.html.footer}</footer> {body.html.body}</body></html>'
             htmlFormatted = html_content.format(**data)
             pdf_io = BytesIO()
-            WeasyHTML(string=htmlFormatted, base_url=base_url).write_pdf(
-                pdf_io,
-                stylesheets=[CSS(string=body.html.css)] if body.html.css else None
-            )
+            html=HTML(string=htmlFormatted, base_url='api')
+            css = CSS(string=body.html.css,font_config=font_config)
+            html.write_pdf(
+            pdf_io, stylesheets=[css],
+            font_config=font_config)
             pdf_io.seek(0)
             #return para visualizar el pdf en el navegador
             
